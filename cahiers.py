@@ -173,14 +173,16 @@ def cahiers_menu():
     st.markdown("Edit not enabled yet (future). Indicators: ✅ GOOD | ⚠️ NOT_GOOD | ❌ BAD")
     st.dataframe(display_df, width='stretch')
 
-    # Delete
-    del_id = st.number_input("Delete ID", min_value=0, step=1, key="cah_del_id")
-    if st.button("Delete Entry", disabled=del_id == 0):
-        try:
-            delete_cahier_entry(int(del_id))
-            add_msg("success", f"Deleted entry {del_id}")
-            st.rerun()
-        except Exception as e:
-            add_msg("error", f"Delete failed: {e}")
+    # --- Admin Actions ---
+    if st.session_state.get("role") == "admin":
+        st.subheader("Admin Actions")
+        del_id = st.number_input("Delete ID", min_value=0, step=1, key="cah_del_id")
+        if st.button("Delete Entry", disabled=del_id == 0):
+            try:
+                delete_cahier_entry(int(del_id))
+                add_msg("success", f"Deleted entry {del_id}")
+                st.rerun()
+            except Exception as e:
+                add_msg("error", f"Delete failed: {e}")
 
     return messages
