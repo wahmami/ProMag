@@ -171,14 +171,16 @@ def journal():
                 st.rerun()
 
     with c_delete:
-        del_id = st.number_input("Delete ID", min_value=0, step=1, key="ji_del_id")
-        if st.button("Delete Record", disabled=del_id == 0):
-            try:
-                delete_journal_record(int(del_id))
-                msg("success", f"Deleted record {del_id}")
-                st.rerun()
-            except Exception as e:
-                msg("error", f"Delete failed: {e}")
+        # Only show delete for admins
+        if st.session_state.get("role") == "admin":
+            del_id = st.number_input("Delete ID", min_value=0, step=1, key="ji_del_id")
+            if st.button("Delete Record", disabled=del_id == 0):
+                try:
+                    delete_journal_record(int(del_id))
+                    msg("success", f"Deleted record {del_id}")
+                    st.rerun()
+                except Exception as e:
+                    msg("error", f"Delete failed: {e}")
 
     return messages
 
