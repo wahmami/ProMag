@@ -28,8 +28,11 @@ MAIN_MENUS = [
     "Materials",
     "Devoirs",
     "Rapports",
-    "Settings"
 ]
+
+# Add "Settings" to the menu only if the user is an admin
+if st.session_state.get("role") == "admin":
+    MAIN_MENUS.append("Settings")
 
 main = st.sidebar.radio("Menu", MAIN_MENUS)
 messages = []
