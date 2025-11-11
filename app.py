@@ -1,10 +1,25 @@
 import streamlit as st
+from auth import login  # Import the login function
 from attendance import attendance
 from journal import journal
 from cahiers import cahiers_menu
 from settings_menu import settings_menu  # or settings_menu.py if reverted
 
 st.set_page_config(layout="wide", page_title="PerfMan Lite")
+
+# --- Authentication ---
+if not st.session_state.get("logged_in"):
+    login()
+    st.stop()  # Stop execution if not logged in
+
+# --- Main App ---
+
+# Logout Button in the sidebar
+st.sidebar.write(f"Welcome, **{st.session_state.user}**!")
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.session_state.user = None
+    st.rerun()
 
 MAIN_MENUS = [
     "Attendance",
